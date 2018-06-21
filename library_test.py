@@ -30,9 +30,33 @@ class TestCase(unittest.TestCase):
     def test_no_integers(self):
         self.assert_extract("no integers", library.integers)
 
+    # prove that if we look for dates in format YYYY-MM-DD
+    # where MM is in range [1, 12] and DD is in range [1, 31] we find one
     def test_dates(self):
-        self.assert_extract('I was born on 2015-07-25.',
-                            library.dates_iso8601, '2015-07-25')
+        # TODO split to several tests
+        for mm in range(1, 13):
+            self.assert_extract("I was born on 2015-{:02d}-25.".format(mm),
+                    library.dates_iso8601, "2015-{:02d}-25".format(mm))
+        for dd in range(1, 32):
+            self.assert_extract("I was born on 2015-07-{:02d}.".format(dd),
+                    library.dates_iso8601, "2015-07-{:02d}".format(dd))
+
+    # prove that if we look for dates in format YYYY-MM-DD
+    # where there are none, we get no results.
+    def test_no_dates(self):
+        self.assert_extract('I was born in middle ages.', library.dates_iso8601)
+
+    # prove that if we look for dates in format YYYY-MM-DD
+    # where MM is not in range [1, 12], we get no results.
+    def test_invalid_month_in_dates(self):
+        for mm in (0, 13):
+            self.assert_extract("I was born on 2015-{:02d}-25.".format(mm), library.dates_iso8601)
+
+    # prove that if we look for dates in format YYYY-MM-DD
+    # where DD is not in range [1, 31], we get no results.
+    def test_invalid_day_in_dates(self):
+        for dd in (0, 32):
+            self.assert_extract("I was born on 2015-07-{:02d}.".format(dd), library.dates_iso8601)
 
 
 if __name__ == '__main__':

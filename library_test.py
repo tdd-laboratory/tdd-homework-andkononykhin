@@ -30,6 +30,10 @@ class TestCase(unittest.TestCase):
     def test_no_integers(self):
         self.assert_extract("no integers", library.integers)
 
+    def test_dates(self):
+        self.assert_extract('I was born on 2015-07-25.',
+                            library.dates_iso8601, '2015-07-25')
+
 
 if __name__ == '__main__':
     unittest.main()

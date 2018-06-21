@@ -1,7 +1,7 @@
 import re
 from calendar import month_abbr
 
-_whole_word = lambda x: re.compile(r'(?<=\W)' + x + '(?=\W)')
+_whole_word = lambda x: re.compile(r'\b' + x + r'\b')
 _mixed_ordinal_pat = _whole_word(r'-?\d+(st|th|nd|rd)')
 _date_iso8601_pat = _whole_word(r'\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])')
 _date_DDMonYYYY_pat = _whole_word(r'\d{{2}} ({}) \d{{4}}'.format('|'.join(month_abbr[1:])))

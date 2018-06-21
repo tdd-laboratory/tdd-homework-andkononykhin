@@ -15,7 +15,7 @@ class TestCase(unittest.TestCase):
     # Helper function
     def assert_extract(self, text, extractors, *expected):
         actual = [x[1].group(0) for x in library.scan(text, extractors)]
-        self.assertEquals(str(actual), str([x for x in expected]))
+        self.assertEqual(str(actual), str([x for x in expected]))
 
     # First unit test; prove that if we scan NUM_CORPUS looking for mixed_ordinals,
     # we find "5th" and "1st".

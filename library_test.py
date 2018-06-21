@@ -81,5 +81,58 @@ class TestCase(unittest.TestCase):
                     library.dates_DDMonYYYY, _date)
 
 
+        # ISO 8601 with timestamps
+    def test_more_test01(self):
+        #   time precision of minutes
+        self.assert_extract("The exact datetime is 2018-06-22 18:22.",
+                library.dates_iso8601, "2018-06-22 18:22")
+
+    def test_more_test02(self):
+        #   time precision of seconds
+        self.assert_extract("The exact datetime is 2018-06-22 18:22:19.",
+                library.dates_iso8601, "2018-06-22 18:22:19")
+
+    def test_more_test03(self):
+        #   time precision of milliseconds
+        self.assert_extract("The exact datetime is 2018-06-22 18:22:19.123.",
+                library.dates_iso8601, "2018-06-22 18:22:19.123")
+
+    def test_more_test04(self):
+        #   date-time delimiter is 'T'
+        self.assert_extract("The exact datetime is 2018-06-22T18:22:19.123.",
+                library.dates_iso8601, "2018-06-22T18:22:19.123")
+
+        # DDMonYYYY
+    def test_more_test05(self):
+        #   year is greater 0
+        self.assert_extract("I was born on 25 Jul -2015.",
+                library.dates_DDMonYYYY)
+
+    def test_more_test06(self):
+        #   day is in range [1, 31]
+        self.assert_extract("I was born on 0 Jul 2015.",
+                library.dates_DDMonYYYY)
+        self.assert_extract("I was born on 32 Jul 2015.",
+                library.dates_DDMonYYYY)
+
+    def test_more_test07(self):
+        #   no matches if Mon is wrong
+        self.assert_extract("I was born on 25 Juf, 2015.",
+                library.dates_DDMonYYYY)
+
+    def test_more_test08(self):
+        #   any number of spaces inside DDMonYYYY
+        self.assert_extract("I was born on 25  Jul\t 2015.",
+                library.dates_DDMonYYYY, "25  Jul\t 2015")
+
+    def test_more_test09(self):
+        #   comma after Mon in DDMonYYYY
+        self.assert_extract("I was born on 25 Jul, 2015.",
+                library.dates_DDMonYYYY, "25 Jul, 2015")
+
+    def test_more_test10(self):
+        # comma-separated grouping in numbers
+        self.assert_extract("Total number was 123,456,789", library.integers, '123,456,789')
+
 if __name__ == '__main__':
     unittest.main()
